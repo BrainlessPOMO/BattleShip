@@ -11,15 +11,6 @@ public class Main {
     public static void main(String[] args) throws IOException {
         getRowsAndColumns();
         playerTest();
-        HumanPlayer player3 = new HumanPlayer("kati");
-        player3.initField(rowsNum, columnsNum);
-        while (true){
-            try {
-                player3.selectMove();
-            } catch (InvalidLocationException e) {
-                System.out.println(e.getMessage());
-            }
-        }
     }
 
     private static void playerTest(){
@@ -41,7 +32,7 @@ public class Main {
         System.out.println(player2.getField().toStringWithShips());
 
 //        hitAllShips(player1);
-        hitAllShips(player2);
+//        hitAllShips(player2);
 
         System.out.println("Player 1 Field");
         System.out.println("----------------------------------------------------------------");
@@ -51,8 +42,21 @@ public class Main {
         System.out.println("----------------------------------------------------------------");
         System.out.println(player2.getField().toString());
 
-        System.out.println("player1 won: " + player1.hasWon());
-        System.out.println("player2 won: " + player2.hasWon());
+        while (true){
+            try {
+                player1.selectMove();
+                if(player1.hasWon() || player2.hasWon()) break;
+
+            } catch (InvalidLocationException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        if(player1.hasWon()){
+            System.out.println("player1 won: " + player1.hasWon());
+        }else{
+            System.out.println("player2 won: " + player2.hasWon());
+        }
     }
 
     private static void hitAllShips(Player player1){
@@ -87,7 +91,6 @@ public class Main {
             throw new RuntimeException(e);
         }
     }
-
     private static void getRowsAndColumns() {
         while(true){
             try {
@@ -108,6 +111,7 @@ public class Main {
             }
         }
     }
+
 
 
 }

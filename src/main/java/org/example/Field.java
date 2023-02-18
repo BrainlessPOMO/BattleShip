@@ -263,6 +263,8 @@ public class Field {
     }
     public char convertRow(int number) {
         switch (number){
+            case 0:
+                return 'A';
             case 1:
                 return 'B';
             case 2:
@@ -292,41 +294,43 @@ public class Field {
             case 14:
                 return 'O';
             default:
-                return 'A';
+                return '0';
         }
     }
     public int convertRow(char row)  {
         switch (row){
-            case 'B':
+            case 'A', 'a':
+                return 0;
+            case 'B', 'b':
                 return 1;
-            case 'C':
+            case 'C', 'c':
                 return 2;
-            case 'D':
+            case 'D', 'd':
                 return 3;
-            case 'E':
+            case 'E', 'e':
                 return 4;
-            case 'F':
+            case 'F', 'f':
                 return 5;
-            case 'G':
+            case 'G', 'g':
                 return 6;
-            case 'H':
+            case 'H', 'h':
                 return 7;
-            case 'I':
+            case 'I', 'i':
                 return 8;
-            case 'J':
+            case 'J', 'j':
                 return 9;
-            case 'K':
+            case 'K', 'k':
                 return 10;
-            case 'L':
+            case 'L', 'l':
                 return 11;
-            case 'M':
+            case 'M', 'm':
                 return 12;
-            case 'N':
+            case 'N', 'n':
                 return 13;
-            case 'O':
+            case 'O', 'o':
                 return 14;
             default:
-                return 0;
+                return -1;
         }
     }
 

@@ -1,5 +1,6 @@
 package org.example;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -18,15 +19,20 @@ public class HumanPlayer extends Player{
 
         try{
             Command command = Command.fromString(decision);
-            System.out.println("Chose: " + command);
+            commandController(command);
             return;
         } catch (InputMismatchException e){
             isCommand = false;
         }
 
         try{
-            Location newLoc = field.getLocation(decision);
-            System.out.println("Chose move: " + newLoc.getRow() + "   " + newLoc.getCol());
+            if(this.field.getLocation(decision).isMarked()) {
+                System.out.println("This location is already marked!");
+                return;
+            }
+            this.field.processValidMove(field.getLocation(decision));
+
+            System.out.println(this.field.toString());
             return;
         }catch (InvalidLocationException e){
             isMove = false;
@@ -38,18 +44,27 @@ public class HumanPlayer extends Player{
     }
 
     public void placeShips(Field otherField){
-        if(wantRandomized()){
+        if(wantRandomizedShipPlaces()){
             super.placeShips(otherField);
             return;
         }
 
-        setNewShip(otherField, "Aircraft Carrier");
-        setNewShip(otherField, "Aircraft Carrier");
-        setNewShip(otherField, "Destroyer");
-        setNewShip(otherField, "Destroyer");
-        setNewShip(otherField, "Destroyer");
-        setNewShip(otherField, "Submarine");
-        setNewShip(otherField, "Submarine");
+        ArrayList<String> totalShips = new ArrayList<>() {
+            {
+                add("Aircraft Carrier");
+                add("Aircraft Carrier");
+                add("Destroyer");
+                add("Destroyer");
+                add("Destroyer");
+                add("Submarine");
+                add("Submarine");
+            }
+        };
+
+        for(String ship : totalShips){
+            placeNewShip(otherField, ship);
+            System.out.println(otherField.toStringWithShips());
+        }
 
     }
 
@@ -58,7 +73,7 @@ public class HumanPlayer extends Player{
      * Helper Functions
      *
      * */
-    private boolean wantRandomized() {
+    private boolean wantRandomizedShipPlaces() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Do you want your ships to be placed randomly?(yes, no): ");
 
@@ -71,9 +86,48 @@ public class HumanPlayer extends Player{
         }
     }
 
-    private void setNewShip(Field otherField, String typeOfShip){
+    private void placeNewShip(Field otherField, String typeOfShip){
         Scanner sc = new Scanner(System.in);
+        boolean isplaced = false;
 
+        while(!isplaced){
+            System.out.println("Please tell me where you want to put your "+ typeOfShip +"(ex: A3): ");
+            String tempLoc = sc.nextLine();
+            System.out.println("Please tell me the direction of your your first AircraftCarrier(ex: h=horizontal, v=vertical): ");
+            String tempDir = sc.nextLine();
+
+            try {
+                switch (typeOfShip){
+                    case "Aircraft Carrier":
+                        if(otherField.placeShip(new AircraftCarrier(otherField, ShipDirection.fromString(tempDir), otherField.getLocation(tempLoc)), false)){
+                            isplaced = true;
+                            break;
+                        }
+                        else throw new InvalidLocationException("You cannot place your ship there");
+                    case "Destroyer":
+                        if(otherField.placeShip(new Destroyer(otherField, ShipDirection.fromString(tempDir), otherField.getLocation(tempLoc)), false)){
+                            isplaced = true;
+                            break;
+                        }
+                        else throw new InvalidLocationException("You cannot place your ship there");
+                    default:
+                        if(otherField.placeShip(new Submarine(otherField, ShipDirection.fromString(tempDir), otherField.getLocation(tempLoc)), false)){
+                            isplaced = true;
+                            break;
+                        }
+                        else throw new InvalidLocationException("You cannot place your ship there");
+                }
+            } catch (InvalidLocationException e){
+                System.out.println(e.getMessage());
+            } catch (InputMismatchException e){
+                System.out.println(e.getMessage());
+            } catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    private void placeShipsInSpecificPlaces(Field otherField){
         try {
             otherField.placeShip(new AircraftCarrier(otherField, ShipDirection.HORIZONTAL, otherField.getLocation("A0")), false);
             otherField.placeShip(new AircraftCarrier(otherField, ShipDirection.HORIZONTAL, otherField.getLocation("B0")), false);
@@ -87,34 +141,33 @@ public class HumanPlayer extends Player{
         } catch (InputMismatchException e){
             System.out.println(e.getMessage());
         }
-
-//        while(true){
-//            System.out.println("Please where you want to put your "+ typeOfShip +"(ex: A3): ");
-//            String tempLoc = sc.nextLine();
-//            System.out.println("Please tell me the direction of your your first AircraftCarrier(ex: h=horizontal, v=vertical): ");
-//            String tempDir = sc.nextLine();
-//
-//            try {
-//                switch (typeOfShip){
-//                    case "Aircraft Carrier":
-//                        otherField.placeShip(new AircraftCarrier(otherField, ShipDirection.fromString(tempDir), otherField.getLocation(tempLoc)), false);
-//                        break;
-//                    case "Destroyer":
-//                        otherField.placeShip(new Destroyer(otherField, ShipDirection.fromString(tempDir), otherField.getLocation(tempLoc)), false);
-//                        break;
-//                    default:
-//                        otherField.placeShip(new Submarine(otherField, ShipDirection.fromString(tempDir), otherField.getLocation(tempLoc)), false);
-//                        break;
-//                }
-//            } catch (InvalidLocationException e){
-//                System.out.println(e.getMessage());
-//            } catch (InputMismatchException e){
-//                System.out.println(e.getMessage());
-//            } catch (Exception e){
-//                System.out.println(e.getMessage());
-//            }
-//
-//            break;
-//        }
     }
+
+    private void commandController(Command command){
+        switch (command){
+            case EXIT :
+                System.out.println("Are you sure you want to exit the program? (ex: y=yes, n=no) \nAny game that is not saved will be lost!");
+                Scanner sc = new Scanner(System.in);
+                String answer = sc.nextLine().toLowerCase();
+
+                if(answer.equals("y") || answer.equals("yes")){
+                    super.exitCommandController();
+                }
+                break;
+            case LOAD:
+                super.loadCommandController();
+                break;
+            case SAVE:
+                super.saveCommandController();
+                break;
+            default:
+                System.out.println("-----------------------------------------");
+                for(Command cmd : Command.values()){
+                    System.out.println(cmd.commandString + " : " + cmd.helpText);
+                }
+                System.out.println("-----------------------------------------");
+                System.out.println();
+        }
+    }
+
 }

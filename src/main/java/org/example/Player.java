@@ -33,7 +33,7 @@ public class Player {
         for(ArrayList<Location> row : this.field.getLocations() ){
             for(Location loc : row){
                 if(loc.getShip() != null){
-                    if(!loc.getShip().isHit()) return false;
+                    if(!loc.getShip().isSinking()) return false;
                 }
             }
         }
@@ -42,8 +42,25 @@ public class Player {
     }
 
     public void selectMove() throws InvalidLocationException{
-        // TO DO
+        // TODO
         // SELIDA 5
+    }
+
+    /*
+    *
+    * Helper Functions
+    *
+    * */
+    protected void exitCommandController(){
+        System.exit(-1);
+    }
+
+    protected void loadCommandController(){
+        System.out.println("Inside loadCommandController");
+    }
+
+    protected void saveCommandController(){
+        System.out.println("Inside saveCommandController");
     }
 
     /*
