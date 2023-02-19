@@ -1,0 +1,100 @@
+{
+  "rowsNum": 15,
+  "columnsNum": 15,
+  "maxMoves": 15,
+  "playing": "player2",
+  "players": [
+    {
+      "type": "humanPlayer",
+      "name": "fake_name",
+      "ships": [
+        {
+          "type": "aircraftCarrier",
+          "shipDirection": "v || h",
+          "startLocation": {
+            "row": 0,
+            "column": 0
+          }
+        },
+        {
+          "type": "aircraftCarrier",
+          "shipDirection": "a direction",
+          "startLocation": "a location"
+        },
+        {
+          "type": "destroyer",
+          "shipDirection": "a direction",
+          "startLocation": "a location"
+        },
+        {
+          "type": "destroyer",
+          "shipDirection": "a direction",
+          "startLocation": "a location"
+        },
+        {
+          "type": "destroyer",
+          "shipDirection": "a direction",
+          "startLocation": "a location"
+        },
+        {
+          "type": "submarine",
+          "shipDirection": "a direction",
+          "startLocation": "a location"
+        },
+        {
+          "type": "submarine",
+          "shipDirection": "a direction",
+          "startLocation": "a location"
+        }
+      ]
+    },
+    {
+      "type": "humanPlayer",
+      "name": "fake_name",
+      "ships": [
+        {
+          "type": "aircraftCarrier",
+          "shipDirection": "a direction",
+          "startLocation": "a location"
+        },
+        {
+          "type": "aircraftCarrier",
+          "shipDirection": "a direction",
+          "startLocation": "a location"
+        },
+        {
+          "type": "destroyer",
+          "shipDirection": "a direction",
+          "startLocation": "a location"
+        },
+        {
+          "type": "destroyer",
+          "shipDirection": "a direction",
+          "startLocation": "a location"
+        },
+        {
+          "type": "destroyer",
+          "shipDirection": "a direction",
+          "startLocation": "a location"
+        },
+        {
+          "type": "submarine",
+          "shipDirection": "a direction",
+          "startLocation": "a location"
+        },
+        {
+          "type": "submarine",
+          "shipDirection": "a direction",
+          "startLocation": "a location"
+        }
+      ]
+    }
+  ],
+  "locations": [
+    {
+      "row": 0,
+      "column": 0,
+      "marked": true
+    }
+  ]
+}

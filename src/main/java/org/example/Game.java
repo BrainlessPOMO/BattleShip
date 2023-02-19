@@ -3,7 +3,7 @@ package org.example;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class Game {
+public class Game extends Main{
     private int rowsNum = 0;
     private int columnsNum = 0;
 
@@ -20,6 +20,13 @@ public class Game {
 
     public Game(Player player1, Player player2){
         getRowsGetColumnsGetMaxMoves();
+        this.player1 = player1;
+        this.player2 = player2;
+    }
+
+    public Game(int rowsNum, int columnsNum, Player player1, Player player2){
+        this.rowsNum = rowsNum;
+        this.columnsNum = columnsNum;
         this.player1 = player1;
         this.player2 = player2;
     }
@@ -57,6 +64,10 @@ public class Game {
             while (true){
                 try {
                     currentPlayer.selectMove();
+
+                    System.out.println(currentPlayer.getName() + "'s Field");
+                    System.out.println("----------------------------------------------------------------");
+                    System.out.println(currentPlayer.getField().toStringWithShips());
                     break;
                 } catch (MoveIsCommandException e){
                     commandController(e);
@@ -83,7 +94,7 @@ public class Game {
             if(!counterController) counter ++;
             counterController = !counterController;
         }
-        showResult();
+        if(counter == this.maxMoves) showResult();
     }
 
     public void showResult(){
@@ -95,6 +106,7 @@ public class Game {
     public void showResult(Player player){
         System.out.println(player.getName() + " won!!!");
         showFields();
+        showScores();
     }
 
     /*
@@ -105,11 +117,11 @@ public class Game {
     public void showFields(){
         System.out.println(this.player1.getName() + "'s Field");
         System.out.println("----------------------------------------------------------------");
-        System.out.println(player1.field.toStringWithShips());
+        System.out.println(player1.field.toString());
 
         System.out.println(this.player2.getName() + "'s Field");
         System.out.println("----------------------------------------------------------------");
-        System.out.println(player2.field.toStringWithShips());
+        System.out.println(player2.field.toString());
 
     }
 
@@ -186,33 +198,6 @@ public class Game {
             } catch (NumberFormatException e){
                 System.out.println("Please provide an integer for number of maxMoves!");
             }
-        }
-    }
-
-    public void commandController(MoveIsCommandException e) {
-        switch (e.getCommand()){
-            case EXIT :
-                System.out.println("Are you sure you want to exit the program? (ex: y=yes, n=no) \nAny game that is not saved will be lost!");
-                Scanner sc = new Scanner(System.in);
-                String answer = sc.nextLine().toLowerCase();
-
-                if(answer.equals("y") || answer.equals("yes")){
-                    System.exit(-1);
-                }
-                break;
-            case LOAD:
-                System.out.println("Inside loadCommandController");
-                break;
-            case SAVE:
-                System.out.println("Inside saveCommandController");
-                break;
-            default:
-                System.out.println("-----------------------------------------");
-                for(Command cmd : Command.values()){
-                    System.out.println(cmd.commandString + " : " + cmd.helpText);
-                }
-                System.out.println("-----------------------------------------");
-                System.out.println();
         }
     }
 

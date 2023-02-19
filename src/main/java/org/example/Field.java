@@ -53,7 +53,10 @@ public class Field {
 
     public boolean placeShipRandomly(Ship s, int maxTries, boolean checkMarked){
         Random rand = new Random();
-        int tries = 0;
+        int tries;
+
+        if(maxTries == 0) tries = 1;
+        else tries = 0;
 
         ArrayList<Location> shipOldLocations = new ArrayList<>();
         // if checkMarked is true then we should check also for the past Locations of the ship
@@ -61,7 +64,7 @@ public class Field {
             shipOldLocations = getOldLocationsOfAShip(s);
         }
 
-        while(tries < maxTries){
+        while(tries != maxTries){
             int tempRow = rand.nextInt(numRows-1);
             int tempCol = rand.nextInt(numCols-1);
             ShipDirection tempDirection = getDirection(rand.nextInt(2));
@@ -69,13 +72,13 @@ public class Field {
             // check if temporary locations are occupied
             boolean isOccupied = isOccupied(s, tempDirection, tempRow, tempCol);
 
-            // check if temporary locations are int the old locations
+            // check if temporary locations are in the old locations
             boolean isChecked = false;
             if(checkMarked) isChecked = isOccupied(s, tempDirection, tempRow, tempCol, shipOldLocations);
 
             if(!isOccupied && !isChecked){
+                if(checkMarked) removeShip(s);
                 setShipOnField(s, tempDirection, tempRow, tempCol, s.getLength());
-                System.out.println("Ship places successfully");
                 return true;
             }
             tries ++;
@@ -113,6 +116,16 @@ public class Field {
                 System.out.println("A Ship sunk");
                 return true;
             }
+        }
+        for(int i=-4; i<=4; i++){
+            try{
+                if(i != 0) shipThreat(locations.get(moveLoc.getRow() + i).get(moveLoc.getCol()));
+            } catch (Exception e) {  }
+        }
+        for(int i=-4; i<=4; i++){
+            try{
+                if(i != 0) shipThreat(locations.get(moveLoc.getRow()).get(moveLoc.getCol() + i));
+            } catch (Exception e) { }
         }
         return false;
     }
@@ -184,7 +197,7 @@ public class Field {
     private void setShipOnField(Ship s, ShipDirection dir, int row, int col, int length){
         if(s != null){
             s.setDir(dir);
-            s.setStartingocation(getLocation(row, col));
+            s.setStartingLocation(getLocation(row, col));
         }
         if(dir == ShipDirection.VERTICAL){
             for(int i=0; i<length; i++) {
@@ -337,6 +350,26 @@ public class Field {
         }
     }
 
+    private void shipThreat(Location threatingLocation){
+
+        System.out.println("Threatening location: " + convertRow(threatingLocation.getRow()) + threatingLocation.getCol());
+
+        if(threatingLocation.isMarked()) return;
+        if(threatingLocation.getShip() == null) return;
+
+        System.out.println(threatingLocation.getShip().getClass());
+        if(threatingLocation.getShip().getClass() == AircraftCarrier.class) return;
+
+        if(threatingLocation.getShip().getClass() == Destroyer.class) {
+            if(placeShipRandomly(threatingLocation.getShip(), 1, true)) System.out.println("A Destroyer changed position!");
+            else System.out.println("A Destroyer tried to change it's position but did not manage");
+        }
+
+        if(threatingLocation.getShip().getClass() == Submarine.class){
+            if(placeShipRandomly(threatingLocation.getShip(), 0, true)) System.out.println("A Sub changed position!");
+        }
+
+    }
     /*
     *
     * Setters - Getters

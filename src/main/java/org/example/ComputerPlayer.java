@@ -18,11 +18,6 @@ public class ComputerPlayer extends Player{
                 if(this.field.processValidMove(field.getLocation(targetedRow, targetedCol))){
                     super.addToScore(this.field.getLocation(targetedRow, targetedCol).getShip().getPoints());
                 }
-
-                System.out.println(this.getName() + "'s Field");
-                System.out.println("----------------------------------------------------------------");
-                System.out.println(this.field.toString());
-                System.out.println("Computer Played: '" + this.field.convertRow(targetedCol) + targetedRow +"'");
                 break;
             }
 

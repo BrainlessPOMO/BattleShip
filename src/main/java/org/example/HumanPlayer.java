@@ -28,11 +28,6 @@ public class HumanPlayer extends Player{
             if(this.field.processValidMove(field.getLocation(decision))){
                 super.addToScore(this.field.getLocation(decision).getShip().getPoints());
             }
-
-
-            System.out.println(this.getName() + "'s Field");
-            System.out.println("----------------------------------------------------------------");
-            System.out.println(this.field.toString());
             return;
         } catch (InvalidLocationException e){
             isMove = false;

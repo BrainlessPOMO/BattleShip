@@ -91,7 +91,7 @@ public class Ship {
     public Location getStartingLocation(){
         return this.start;
     }
-    public void setStartingocation(Location start){
+    public void setStartingLocation(Location start){
         this.start = start;
     }
     public ShipDirection getDir(){

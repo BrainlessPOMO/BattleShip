@@ -20,13 +20,13 @@ public class Player {
 
     public void placeShips(Field otherField) {
         // this func places Ships randomly on the field
-        otherField.placeShipRandomly(new AircraftCarrier(otherField), 10, false);
-        otherField.placeShipRandomly(new AircraftCarrier(otherField), 10, false);
-        otherField.placeShipRandomly(new Destroyer(otherField), 10, false);
-        otherField.placeShipRandomly(new Destroyer(otherField), 10, false);
-        otherField.placeShipRandomly(new Destroyer(otherField), 10, false);
-        otherField.placeShipRandomly(new Submarine(otherField), 10, false);
-        otherField.placeShipRandomly(new Submarine(otherField), 10, false);
+        otherField.placeShipRandomly(new AircraftCarrier(otherField), 0, false);
+        otherField.placeShipRandomly(new AircraftCarrier(otherField), 0, false);
+        otherField.placeShipRandomly(new Destroyer(otherField), 0, false);
+        otherField.placeShipRandomly(new Destroyer(otherField), 0, false);
+        otherField.placeShipRandomly(new Destroyer(otherField), 0, false);
+        otherField.placeShipRandomly(new Submarine(otherField), 0, false);
+        otherField.placeShipRandomly(new Submarine(otherField), 0, false);
     }
 
     public boolean hasWon(){
