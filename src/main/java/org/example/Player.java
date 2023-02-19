@@ -71,4 +71,6 @@ public class Player {
     public Field getField(){
         return this.field;
     }
+
+    public String getName(){ return this.name; }
 }

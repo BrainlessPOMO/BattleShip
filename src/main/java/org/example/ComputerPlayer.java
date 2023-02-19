@@ -3,8 +3,8 @@ package org.example;
 import java.util.Random;
 
 public class ComputerPlayer extends Player{
-    public ComputerPlayer(String name) {
-        super(name);
+    public ComputerPlayer() {
+        super("Computer");
     }
 
     public void selectMove(){

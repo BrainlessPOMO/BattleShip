@@ -9,8 +9,18 @@ public class Main {
     static int columnsNum = 0;
 
     public static void main(String[] args) throws IOException {
-        getRowsAndColumns();
-        playerTest();
+//        getRowsAndColumns();
+//        playerTest();
+
+//        HumanPlayer player1 = new HumanPlayer("kati");
+//        ComputerPlayer player2 = new ComputerPlayer();
+        Game game = new Game();
+
+        game.init();
+        game.placeShips();
+
+        game.play();
+
     }
 
     private static void playerTest(){
@@ -42,15 +52,7 @@ public class Main {
         System.out.println("----------------------------------------------------------------");
         System.out.println(player2.getField().toString());
 
-        while (true){
-            try {
-                player1.selectMove();
-                if(player1.hasWon() || player2.hasWon()) break;
 
-            } catch (InvalidLocationException e) {
-                System.out.println(e.getMessage());
-            }
-        }
 
         if(player1.hasWon()){
             System.out.println("player1 won: " + player1.hasWon());
