@@ -8,13 +8,25 @@ public class ComputerPlayer extends Player{
     }
 
     public void selectMove(){
-        Random rd = new Random();
+        while(true){
+            Random rd = new Random();
 
-        int targetedRow = rd.nextInt(field.getNumRows()-1);
-        int targetedCol = rd.nextInt(field.getNumCols()-1);
+            int targetedRow = rd.nextInt(field.getNumRows()-1);
+            int targetedCol = rd.nextInt(field.getNumCols()-1);
 
-        Location choseLoc = field.getLocation(targetedRow, targetedCol);
-        System.out.println("Chose move: " + choseLoc.getRow() + "   " + choseLoc.getCol());
+            if(!this.field.getLocation(targetedRow, targetedCol).isMarked()){
+                if(this.field.processValidMove(field.getLocation(targetedRow, targetedCol))){
+                    super.addToScore(this.field.getLocation(targetedRow, targetedCol).getShip().getPoints());
+                }
+
+                System.out.println(this.getName() + "'s Field");
+                System.out.println("----------------------------------------------------------------");
+                System.out.println(this.field.toString());
+                System.out.println("Computer Played: '" + this.field.convertRow(targetedCol) + targetedRow +"'");
+                break;
+            }
+
+        }
     }
 
     public void placeShips(Field otherField){

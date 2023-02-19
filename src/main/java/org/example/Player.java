@@ -41,28 +41,11 @@ public class Player {
         return true;
     }
 
-    public void selectMove() throws InvalidLocationException{
-        // TODO
-        // SELIDA 5
-    }
+    public void selectMove() throws InvalidLocationException, Exception{ }
 
-    /*
-    *
-    * Helper Functions
-    *
-    * */
-    protected void exitCommandController(){
-        System.exit(-1);
+    public void addToScore(int points) {
+        setScore(getScore() + points);
     }
-
-    protected void loadCommandController(){
-        System.out.println("Inside loadCommandController");
-    }
-
-    protected void saveCommandController(){
-        System.out.println("Inside saveCommandController");
-    }
-
     /*
     *
     * Setters - Getters
@@ -73,4 +56,9 @@ public class Player {
     }
 
     public String getName(){ return this.name; }
+
+    public int getScore(){ return this.score; }
+
+    public void setScore(int score){ this.score = score; }
+
 }

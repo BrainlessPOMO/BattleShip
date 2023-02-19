@@ -104,14 +104,17 @@ public class Field {
         setShipOnField(null, s.getDir(), s.getStartingLocation().getRow(), s.getStartingLocation().getCol(), s.getLength());
     }
 
-    public void processValidMove(Location moveLoc){
+    // this function returns true if a ship was sunk so that it's score can be added to player's score
+    public boolean processValidMove(Location moveLoc){
         moveLoc.setMarked(true);
         if(moveLoc.getShip() != null) {
             moveLoc.getShip().hit();
             if(moveLoc.getShip().isSinking()){
                 System.out.println("A Ship sunk");
+                return true;
             }
         }
+        return false;
     }
 
     public String toString(){

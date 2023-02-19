@@ -1,7 +1,7 @@
 package org.example;
 
 public class MoveIsCommandException extends InvalidLocationException{
-    Command command;
+    private Command command;
 
     MoveIsCommandException(Command command){
         this.command = command;

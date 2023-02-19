@@ -9,38 +9,37 @@ public class HumanPlayer extends Player{
         super(name);
     }
 
-    public void selectMove() throws InvalidLocationException{
+    public void selectMove() throws InvalidLocationException, Exception{
         System.out.println("Please give a command to be executed, or make a move");
         Scanner sc = new Scanner(System.in);
 
         String decision = sc.nextLine();
-        Boolean isCommand = true;
         Boolean isMove = true;
 
         try{
             Command command = Command.fromString(decision);
-            commandController(command);
-            return;
-        } catch (InputMismatchException e){
-            isCommand = false;
-        }
+            throw new MoveIsCommandException(command);
+        } catch (InputMismatchException e){ }
 
         try{
             if(this.field.getLocation(decision).isMarked()) {
-                System.out.println("This location is already marked!");
-                return;
+                throw new Exception("This location is already marked!");
             }
-            this.field.processValidMove(field.getLocation(decision));
+            if(this.field.processValidMove(field.getLocation(decision))){
+                super.addToScore(this.field.getLocation(decision).getShip().getPoints());
+            }
 
+
+            System.out.println(this.getName() + "'s Field");
+            System.out.println("----------------------------------------------------------------");
             System.out.println(this.field.toString());
             return;
-        }catch (InvalidLocationException e){
+        } catch (InvalidLocationException e){
             isMove = false;
         }
-        
-        if(!isCommand && !isMove){
-            throw new InvalidLocationException("No known commands or moves! Please provide a command or a move, or type help to see all the available commands");
-        }
+
+        if(!isMove) throw new InvalidLocationException("No known commands or moves! Please provide a command or a move, or type 'help' to see all the available commands");
+
     }
 
     public void placeShips(Field otherField){
@@ -140,33 +139,6 @@ public class HumanPlayer extends Player{
             System.out.println(e.getMessage());
         } catch (InputMismatchException e){
             System.out.println(e.getMessage());
-        }
-    }
-
-    private void commandController(Command command){
-        switch (command){
-            case EXIT :
-                System.out.println("Are you sure you want to exit the program? (ex: y=yes, n=no) \nAny game that is not saved will be lost!");
-                Scanner sc = new Scanner(System.in);
-                String answer = sc.nextLine().toLowerCase();
-
-                if(answer.equals("y") || answer.equals("yes")){
-                    super.exitCommandController();
-                }
-                break;
-            case LOAD:
-                super.loadCommandController();
-                break;
-            case SAVE:
-                super.saveCommandController();
-                break;
-            default:
-                System.out.println("-----------------------------------------");
-                for(Command cmd : Command.values()){
-                    System.out.println(cmd.commandString + " : " + cmd.helpText);
-                }
-                System.out.println("-----------------------------------------");
-                System.out.println();
         }
     }
 
