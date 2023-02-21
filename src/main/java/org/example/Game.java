@@ -12,31 +12,25 @@ public class Game extends Main{
     private Player player1;
     private Player player2;
 
+    private Player currentPlayer;
+    private int counter = 0;
+    private boolean counterController = true;
+
     public Game(){
         getRowsGetColumnsGetMaxMoves();
         createPlayer(1);
         createPlayer(2);
     }
 
-    public Game(Player player1, Player player2){
-        getRowsGetColumnsGetMaxMoves();
-        this.player1 = player1;
-        this.player2 = player2;
-    }
-
-    public Game(int rowsNum, int columnsNum, Player player1, Player player2){
+    public Game(int rowsNum, int columnsNum){
         this.rowsNum = rowsNum;
         this.columnsNum = columnsNum;
-        this.player1 = player1;
-        this.player2 = player2;
     }
 
-    public Game(int rowsNum, int columnsNum, int maxMoves, Player player1, Player player2){
+    public Game(int rowsNum, int columnsNum, int maxMoves){
         this.rowsNum = rowsNum;
         this.columnsNum = columnsNum;
         this.maxMoves = maxMoves;
-        this.player1 = player1;
-        this.player2 = player2;
     }
 
     public void init(){
@@ -49,7 +43,7 @@ public class Game extends Main{
         player2.placeShips(player1.getField());
     }
 
-    public void play(Player currentPlayer){
+    public void play(){
         System.out.println(this.player1.getName() + "'s Field");
         System.out.println("----------------------------------------------------------------");
         System.out.println(player1.getField().toStringWithShips());
@@ -58,8 +52,10 @@ public class Game extends Main{
         System.out.println("----------------------------------------------------------------");
         System.out.println(player2.getField().toStringWithShips());
 
-        int counter = 0;
-        boolean counterController = true;
+        for(Ship ship : this.player1.getField().getShips()){
+            System.out.println(ship.toString());
+        }
+
         while (this.maxMoves != counter){
             while (true){
                 try {
@@ -91,8 +87,8 @@ public class Game extends Main{
                 break;
             }
 
-            if(!counterController) counter ++;
-            counterController = !counterController;
+            if(!counterController) this.counter ++;
+            this.counterController = !this.counterController;
         }
         if(counter == this.maxMoves) showResult();
     }
@@ -218,5 +214,47 @@ public class Game extends Main{
     }
     public Player getPlayer2(){
         return this.player2;
+    }
+
+    public void setCurrentPlayer(Player currentPlayer){
+        this.currentPlayer = currentPlayer;
+    }
+    public Player getCurrentPlayer(){
+        return this.currentPlayer;
+    }
+
+    public void setCounter(int counter){
+        this.counter = counter;
+    }
+    public int getCounter(){
+        return this.counter;
+    }
+
+    public void setCounterController(boolean counterController){
+        this.counterController = counterController;
+    }
+    public boolean getCounterController(){
+        return this.counterController;
+    }
+
+    public void setRowsNum(int rowsNum){
+        this.rowsNum = rowsNum;
+    }
+    public int getRowsNum(){
+        return this.rowsNum;
+    }
+
+    public void setColumnsNum(int columnsNum){
+        this.columnsNum = columnsNum;
+    }
+    public int getColumnsNum(){
+        return this.columnsNum;
+    }
+
+    public void setMaxMoves(int maxMoves){
+        this.maxMoves = maxMoves;
+    }
+    public int getMaxMoves(){
+        return this.maxMoves;
     }
 }

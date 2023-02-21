@@ -30,8 +30,10 @@ public class Ship {
                 "Length:" + this.getLength() +
                 "\tPoints:" + this.getPoints() +
                 "\tLetter:" + this.getLetter() +
-                "\tField:" + this.getField()
-                );
+                "\tCol:" + this.getStartingLocation().getCol() +
+                "\tRow:" + this.getStartingLocation().getRow() +
+                "\tDir:" + this.getDir()
+        );
     }
 
     public void hit(){

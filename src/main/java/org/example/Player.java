@@ -1,9 +1,6 @@
 package org.example;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Scanner;
-
 public class Player {
     private String name;
     private int score;

@@ -9,7 +9,8 @@ public class Field {
     private int numRows;
     private int numCols;
     private ArrayList<ArrayList<Location>> locations = new ArrayList<>();
-    Player player;
+
+    private ArrayList<Ship> ships = new ArrayList<>();
 
     public Field(int numRows, int numCols){
         this.numRows = numRows;
@@ -97,7 +98,6 @@ public class Field {
         // check if the locations are occupied
         if(!isOccupied && !isChecked){
             setShipOnField(s, s.getDir(), s.getStartingLocation().getRow(), s.getStartingLocation().getCol(), s.getLength());
-            System.out.println("Ship successfully placed!");
             return true;
         }
         return false;
@@ -194,7 +194,7 @@ public class Field {
         return shipOldLocations;
     }
 
-    private void setShipOnField(Ship s, ShipDirection dir, int row, int col, int length){
+    public void setShipOnField(Ship s, ShipDirection dir, int row, int col, int length){
         if(s != null){
             s.setDir(dir);
             s.setStartingLocation(getLocation(row, col));
@@ -203,11 +203,13 @@ public class Field {
             for(int i=0; i<length; i++) {
                 getLocation(row + i, col).setShip(s);
             }
+            ships.add(s);
         }
         else {
             for(int i=0; i<length; i++) {
                 getLocation(row, col + i).setShip(s);
             }
+            ships.add(s);
         }
     }
 
@@ -386,5 +388,9 @@ public class Field {
 
     public int getNumCols(){
         return this.numCols;
+    }
+
+    public ArrayList<Ship> getShips(){
+        return this.ships;
     }
 }

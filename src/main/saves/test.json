@@ -1,0 +1,142 @@
+{
+  "rowsNum": 10,
+  "columnsNum": 10,
+  "maxMoves": -1,
+  "playing": "player1",
+  "counter": 0,
+  "counterController": false,
+  "players": [
+    {
+      "type": "humanPlayer",
+      "name": "fake_name",
+      "ships": [
+        {
+          "type": "ac",
+          "shipDirection": "h",
+          "row": 0,
+          "column": 0
+        },
+        {
+          "type": "ac",
+          "shipDirection": "h",
+          "row": 1,
+          "column": 0
+        },
+        {
+          "type": "d",
+          "shipDirection": "h",
+          "row": 2,
+          "column": 0
+        },
+        {
+          "type": "d",
+          "shipDirection": "h",
+          "row": 3,
+          "column": 0
+        },
+        {
+          "type": "d",
+          "shipDirection": "h",
+          "row": 4,
+          "column": 0
+        },
+        {
+          "type": "s",
+          "shipDirection": "h",
+          "row": 5,
+          "column": 0
+        },
+        {
+          "type": "s",
+          "shipDirection": "h",
+          "row": 6,
+          "column": 0
+        }
+      ],
+      "fieldMarkedLocations": [
+        {
+          "row": 0,
+          "column": 0
+        },
+        {
+          "row": 1,
+          "column": 0
+        },
+        {
+          "row": 2,
+          "column": 0
+        },
+        {
+          "row": 3,
+          "column": 0
+        }
+      ]
+    },
+    {
+      "type": "computerPlayer",
+      "name": "",
+      "ships": [
+        {
+          "type": "ac",
+          "shipDirection": "h",
+          "row": 0,
+          "column": 0
+        },
+        {
+          "type": "ac",
+          "shipDirection": "h",
+          "row": 1,
+          "column": 0
+        },
+        {
+          "type": "d",
+          "shipDirection": "h",
+          "row": 2,
+          "column": 0
+        },
+        {
+          "type": "d",
+          "shipDirection": "h",
+          "row": 3,
+          "column": 0
+        },
+        {
+          "type": "d",
+          "shipDirection": "h",
+          "row": 4,
+          "column": 0
+        },
+        {
+          "type": "s",
+          "shipDirection": "h",
+          "row": 5,
+          "column": 0
+        },
+        {
+          "type": "s",
+          "shipDirection": "h",
+          "row": 6,
+          "column": 0
+        }
+      ],
+      "fieldMarkedLocations": [
+        {
+          "row": 0,
+          "column": 0
+        },
+        {
+          "row": 1,
+          "column": 0
+        },
+        {
+          "row": 2,
+          "column": 0
+        },
+        {
+          "row": 3,
+          "column": 0
+        }
+      ]
+    }
+  ]
+}

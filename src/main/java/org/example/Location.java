@@ -21,7 +21,7 @@ public class Location {
 
     public void mark(){
         this.setMarked(true);
-        this.ship.hit();
+        if(this.ship != null) this.ship.hit();
     }
 
     public Boolean isEmpty(){
