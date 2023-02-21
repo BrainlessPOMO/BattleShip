@@ -15,4 +15,7 @@ public class AircraftCarrier extends Ship{
     public String getSinkMessage(){
         return super.getSinkMessage("Aircraft Carrier");
     }
+
+    // function for saving type of Ship on a file
+    public String getClassString(){ return "ac"; }
 }

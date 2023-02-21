@@ -3,6 +3,8 @@ package org.example;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -24,7 +26,7 @@ public class Main {
         game.placeShips();
 
         game.setCurrentPlayer(game.getPlayer1());
-        game.play();
+        game.start();
 
     }
 
@@ -65,48 +67,66 @@ public class Main {
     *
     * */
     private void saveCommandController(){
-        JSONObject output = new JSONObject();
-        output.put("rowsNum", game.getRowsNum());
-        output.put("columnsNum", game.getColumnsNum());
-        output.put("maxMoves", game.getMaxMoves());
+        JSONObject outputJSONObject = new JSONObject();
+        outputJSONObject.put("rowsNum", game.getRowsNum());
+        outputJSONObject.put("columnsNum", game.getColumnsNum());
+        outputJSONObject.put("maxMoves", game.getMaxMoves());
 
-        if(game.getCurrentPlayer() == game.getPlayer1()) output.put("playing", "player1");
-        else output.put("playing", "player2");
+        if(game.getCurrentPlayer() == game.getPlayer1()) outputJSONObject.put("playing", "player1");
+        else outputJSONObject.put("playing", "player2");
 
-        output.put("counter", game.getCounter());
-        output.put("counterController", game.getCounterController());
+        outputJSONObject.put("counter", game.getCounter());
+        outputJSONObject.put("counterController", game.getCounterController());
 
-        JSONArray outputPlayers = new JSONArray();
-        JSONObject outputPlayer1 = new JSONObject();
+        JSONArray playersJSONArray = new JSONArray();
 
-        if(game.getPlayer1().getClass() == HumanPlayer.class){
-            outputPlayer1.put("type", "humanPlayer");
-            outputPlayer1.put("name", game.getPlayer1().getName());
-        }
-        else {
-            outputPlayer1.put("type", "computerPlayer");
-            outputPlayer1.put("name", "");
-        }
+        try {
+            // make player1 and player 2 JSON objects and put them inside players JSON Array
+            playersJSONArray.put(playersToJSONObject(1));
+            playersJSONArray.put(playersToJSONObject(2));
 
-        JSONArray player1Ships = new JSONArray();
-        JSONObject shipObject = new JSONObject();
-        for( Ship ship : game.getPlayer1().getField().getShips()){
-
+        } catch (InvalidPlayerException e) {
+            System.out.println(e.getMessage() + "\n" + "This game could not be saved. Sorry for the inconvenience");
         }
 
+        outputJSONObject.put("players", playersJSONArray);
 
-        System.out.println("Inside saveCommandController");
+        System.out.println("How would you want the save to be called?");
+        String fileName = getFileName();
+        String fileDir = "src\\main\\saves\\" + fileName + ".json";
+        try{
+            File file = new File(fileDir);
+            if(file.exists()) {
+                System.out.println("A file with name " + fileName + " already exists. Do you want to override it?");
+
+                Scanner scanner = new Scanner(System.in);
+                String answer = scanner.nextLine();
+                if (!(answer.equals("y") || answer.equals("yes"))) {
+                    System.out.println("File was not saved.");
+                    return;
+                }
+            }
+
+            FileWriter outputFile = new FileWriter(fileDir);
+            outputFile.write(outputJSONObject.toString(1));
+
+            outputFile.close();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        System.out.println("Game Successfully Saved");
     }
     private void loadCommandController() throws LoadFailException {
         int currentPlayer = readFromFileAndParseInfo();
         System.out.println("\n\n------------------------------\nFile is parsed! Game begins\n------------------------------\n\n");
         if(currentPlayer == 1){
             game.setCurrentPlayer(game.getPlayer1());
-            game.play();
+            game.start();
         }
         else if (currentPlayer == 2){
             game.setCurrentPlayer(game.getPlayer2());
-            game.play();
+            game.start();
         }
         else {
             throw new LoadFailException();
@@ -172,6 +192,66 @@ public class Main {
         }
     }
 
+    /*
+     *
+     * Saver Functions
+     *
+     * */
+    public JSONObject shipToJSONObject(Ship ship){
+        JSONObject tempShipObject = new JSONObject();
+
+        tempShipObject.put("type", ship.getClassString());
+        tempShipObject.put("shipDirection", ShipDirection.getShipDirection(ship.getDir()));
+        tempShipObject.put("row", ship.getStartingLocation().getRow());
+        tempShipObject.put("column", ship.getStartingLocation().getCol());
+
+        return tempShipObject;
+    }
+
+    public JSONObject locationToJSONObject(Location loc){
+        JSONObject tempLocationObject = new JSONObject();
+
+        tempLocationObject.put("row", loc.getRow());
+        tempLocationObject.put("column", loc.getCol());
+        return tempLocationObject;
+    }
+
+    public JSONObject playersToJSONObject(int playerNum) throws InvalidPlayerException {
+        JSONObject tempPlayerJSONObject = new JSONObject();
+
+
+        if(game.getPlayerFromNum(playerNum).getClass() == HumanPlayer.class){
+            tempPlayerJSONObject.put("type", "humanPlayer");
+            tempPlayerJSONObject.put("name", game.getPlayerFromNum(playerNum).getName());
+        }
+        else {
+            tempPlayerJSONObject.put("type", "computerPlayer");
+            tempPlayerJSONObject.put("name", "");
+        }
+
+        // create a JSONArray containing all the information about ships on player's 1 field
+        JSONArray playerShipsJSONArray = new JSONArray();
+        for( Ship ship : game.getPlayerFromNum(playerNum).getField().getShips()){
+            JSONObject shipObject = shipToJSONObject(ship);
+            playerShipsJSONArray.put(shipObject);
+        }
+
+
+        // create a JSONArray containing all the markedLocations on player's 1 field
+        JSONArray playerMarkedLocationsJSONArray = new JSONArray();
+        JSONObject ob = new JSONObject();
+        for(ArrayList<Location> row : game.getPlayerFromNum(playerNum).getField().getLocations()){
+            for(Location loc : row){
+                if(loc.isMarked()) playerMarkedLocationsJSONArray.put(locationToJSONObject(loc));
+            }
+        }
+
+        tempPlayerJSONObject.put("ships", playerShipsJSONArray);
+        tempPlayerJSONObject.put("fieldMarkedLocations", playerMarkedLocationsJSONArray);
+
+        return tempPlayerJSONObject;
+    }
+
 
     /*
     *
@@ -179,6 +259,8 @@ public class Main {
     *
     * */
     public int readFromFileAndParseInfo(){
+        System.out.println("Which game file do you want to be loaded?");
+
         String pathToFile = "src\\main\\saves\\" + getFileName() + ".json";
 
         int currentPlayer = -1;
@@ -228,7 +310,6 @@ public class Main {
     public String getFileName(){
         String tempFileName;
         while (true){
-            System.out.println("Which game file do you want to be loaded?");
             Scanner scanner = new Scanner(System.in);
 
             tempFileName = scanner.nextLine();

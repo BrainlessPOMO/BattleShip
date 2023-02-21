@@ -12,6 +12,7 @@ public class Game extends Main{
     private Player player1;
     private Player player2;
 
+    // initialize variables that will be needed for the loading function
     private Player currentPlayer;
     private int counter = 0;
     private boolean counterController = true;
@@ -43,7 +44,7 @@ public class Game extends Main{
         player2.placeShips(player1.getField());
     }
 
-    public void play(){
+    public void start(){
         System.out.println(this.player1.getName() + "'s Field");
         System.out.println("----------------------------------------------------------------");
         System.out.println(player1.getField().toStringWithShips());
@@ -196,6 +197,18 @@ public class Game extends Main{
             }
         }
     }
+
+    public Player getPlayerFromNum(int playerNum) throws InvalidPlayerException {
+        switch (playerNum){
+            case 1:
+                return getPlayer1();
+            case 2:
+                return getPlayer2();
+            default:
+                throw new InvalidPlayerException();
+        }
+    }
+
 
     /*
     *

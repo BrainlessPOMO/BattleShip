@@ -12,4 +12,7 @@ public class Submarine extends Ship{
     public String getSinkMessage(){
         return super.getSinkMessage("Submarine");
     }
+
+    // function for saving type of Ship on a file
+    public String getClassString(){ return "s"; }
 }

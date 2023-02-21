@@ -103,4 +103,6 @@ public class Ship {
         this.dir = dir;
     }
 
+    // function for saving type of Ship on a file
+    public String getClassString(){ return "ship"; }
 }

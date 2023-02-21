@@ -16,5 +16,18 @@ public enum ShipDirection {
         }
     }
 
+    public static String getShipDirection(ShipDirection dir){
+        switch (dir){
+            case HORIZONTAL -> {
+                return "h";
+            }
+            case VERTICAL -> {
+                return "v";
+            }
+            default -> {
+                return "NA";
+            }
+        }
+    }
 
 }

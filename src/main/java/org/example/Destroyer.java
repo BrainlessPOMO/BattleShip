@@ -11,4 +11,8 @@ public class Destroyer extends Ship{
     public String getSinkMessage(){
         return super.getSinkMessage("Destroyer");
     }
+
+    // function for saving type of Ship on a file
+    public String getClassString(){ return "d"; }
+
 }
