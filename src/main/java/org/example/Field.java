@@ -10,7 +10,7 @@ public class Field {
     private int numCols;
     private ArrayList<ArrayList<Location>> locations = new ArrayList<>();
 
-    private ArrayList<Ship> ships = new ArrayList<>();
+    private ArrayList<Ship> ships = new ArrayList<Ship>();
 
     public Field(int numRows, int numCols){
         this.numRows = numRows;
@@ -119,12 +119,12 @@ public class Field {
         }
         for(int i=-4; i<=4; i++){
             try{
-                if(i != 0) shipThreat(locations.get(moveLoc.getRow() + i).get(moveLoc.getCol()));
+                if(i != 0) shipThreat(locations.get(moveLoc.getRow() + i).get(moveLoc.getCol()), moveLoc);
             } catch (Exception e) {  }
         }
         for(int i=-4; i<=4; i++){
             try{
-                if(i != 0) shipThreat(locations.get(moveLoc.getRow()).get(moveLoc.getCol() + i));
+                if(i != 0) shipThreat(locations.get(moveLoc.getRow()).get(moveLoc.getCol() + i), moveLoc);
             } catch (Exception e) { }
         }
         return false;
@@ -203,13 +203,28 @@ public class Field {
             for(int i=0; i<length; i++) {
                 getLocation(row + i, col).setShip(s);
             }
-            ships.add(s);
+
+            //
+            // initialize or update new ship in ships ArrayList
+            //
+            System.out.println(ships.indexOf(s));
+            if(ships.indexOf(s) != -1){
+                ships.set(ships.indexOf(s), s);
+            }
+            else ships.add(s);
         }
         else {
             for(int i=0; i<length; i++) {
                 getLocation(row, col + i).setShip(s);
             }
-            ships.add(s);
+            //
+            // initialize or update new ship in ships ArrayList
+            //
+            System.out.println(ships.indexOf(s));
+            if(ships.indexOf(s) != -1){
+                ships.set(ships.indexOf(s), s);
+            }
+            else ships.add(s);
         }
     }
 
@@ -352,14 +367,16 @@ public class Field {
         }
     }
 
-    private void shipThreat(Location threatingLocation){
+    private void shipThreat(Location threatingLocation, Location hitLocation){
 
-        System.out.println("Threatening location: " + convertRow(threatingLocation.getRow()) + threatingLocation.getCol());
+        //
+        // if the threatened location is marked or does not have a ship or has the same ship as the one hit
+        // Then we won't try to change its position
+        //
 
-        if(threatingLocation.isMarked()) return;
-        if(threatingLocation.getShip() == null) return;
+        if(threatingLocation.isMarked() || threatingLocation.getShip() == null || threatingLocation.getShip() == hitLocation.getShip()) return;
 
-        System.out.println(threatingLocation.getShip().getClass());
+
         if(threatingLocation.getShip().getClass() == AircraftCarrier.class) return;
 
         if(threatingLocation.getShip().getClass() == Destroyer.class) {

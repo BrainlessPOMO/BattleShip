@@ -154,18 +154,18 @@ public class Main {
             switch (tempShip.getString("type")){
                 case "ac":
                     placed = player.getField().placeShip(new AircraftCarrier(player.getField(), ShipDirection.fromString(tempShip.getString("shipDirection")), player.getField().getLocation(tempShip.getInt("row"), tempShip.getInt("column"))), false);
-                    if(!placed) throw new LoadFailException();
+                    if(!placed) throw new LoadFailException("cannot place AC");
                     break;
                 case "d":
                     placed = player.getField().placeShip(new Destroyer(player.getField(), ShipDirection.fromString(tempShip.getString("shipDirection")), player.getField().getLocation(tempShip.getInt("row"), tempShip.getInt("column"))), false);
-                    if(!placed) throw new LoadFailException();
+                    if(!placed) throw new LoadFailException("cannot place destroyer");
                     break;
                 case "s":
                     placed = player.getField().placeShip(new Submarine(player.getField(), ShipDirection.fromString(tempShip.getString("shipDirection")), player.getField().getLocation(tempShip.getInt("row"), tempShip.getInt("column"))), false);
-                    if(!placed) throw new LoadFailException();
+                    if(!placed) throw new LoadFailException("cannot place sub");
                     break;
                 default:
-                    throw new LoadFailException();
+                    throw new LoadFailException("\n\nnot a ship\n\n");
             }
         }
     }
@@ -197,7 +197,7 @@ public class Main {
      * Saver Functions
      *
      * */
-    public JSONObject shipToJSONObject(Ship ship){
+    public JSONObject shipToJSONObject(Ship ship) {
         JSONObject tempShipObject = new JSONObject();
 
         tempShipObject.put("type", ship.getClassString());
@@ -231,9 +231,12 @@ public class Main {
 
         // create a JSONArray containing all the information about ships on player's 1 field
         JSONArray playerShipsJSONArray = new JSONArray();
-        for( Ship ship : game.getPlayerFromNum(playerNum).getField().getShips()){
-            JSONObject shipObject = shipToJSONObject(ship);
-            playerShipsJSONArray.put(shipObject);
+
+        for(Ship ship : game.getPlayerFromNum(playerNum).getField().getShips()){
+            if(ship != null){
+                JSONObject shipObject = shipToJSONObject(ship);
+                playerShipsJSONArray.put(shipObject);
+            }
         }
 
 

@@ -53,10 +53,6 @@ public class Game extends Main{
         System.out.println("----------------------------------------------------------------");
         System.out.println(player2.getField().toStringWithShips());
 
-        for(Ship ship : this.player1.getField().getShips()){
-            System.out.println(ship.toString());
-        }
-
         while (this.maxMoves != counter){
             while (true){
                 try {
@@ -65,6 +61,11 @@ public class Game extends Main{
                     System.out.println(currentPlayer.getName() + "'s Field");
                     System.out.println("----------------------------------------------------------------");
                     System.out.println(currentPlayer.getField().toStringWithShips());
+
+                    for (Ship ship : this.currentPlayer.getField().getShips()){
+                        System.out.println(ship);
+                    }
+
                     break;
                 } catch (MoveIsCommandException e){
                     commandController(e);
@@ -79,12 +80,8 @@ public class Game extends Main{
             else currentPlayer = player1;
 
             // check if a player has won
-            if(player1.hasWon()) {
-                showResult(player1);
-                break;
-            }
-            if(player2.hasWon()){
-                showResult(player2);
+            if(currentPlayer.hasWon()) {
+                showResult(currentPlayer);
                 break;
             }
 
@@ -201,9 +198,9 @@ public class Game extends Main{
     public Player getPlayerFromNum(int playerNum) throws InvalidPlayerException {
         switch (playerNum){
             case 1:
-                return getPlayer1();
+                return this.player1;
             case 2:
-                return getPlayer2();
+                return this.player2;
             default:
                 throw new InvalidPlayerException();
         }
