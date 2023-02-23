@@ -1,0 +1,108 @@
+{
+ "players": [
+  {
+   "ships": [
+    {
+     "column": 10,
+     "shipDirection": "h",
+     "row": 4,
+     "type": "ac"
+    },
+    {
+     "column": 8,
+     "shipDirection": "h",
+     "row": 5,
+     "type": "ac"
+    },
+    {
+     "column": 5,
+     "shipDirection": "h",
+     "row": 13,
+     "type": "d"
+    },
+    {
+     "column": 8,
+     "shipDirection": "v",
+     "row": 2,
+     "type": "d"
+    },
+    {
+     "column": 10,
+     "shipDirection": "h",
+     "row": 8,
+     "type": "d"
+    },
+    {
+     "column": 8,
+     "shipDirection": "v",
+     "row": 7,
+     "type": "s"
+    },
+    {
+     "column": 13,
+     "shipDirection": "h",
+     "row": 13,
+     "type": "s"
+    }
+   ],
+   "name": "aggelos",
+   "fieldMarkedLocations": [],
+   "type": "humanPlayer"
+  },
+  {
+   "ships": [
+    {
+     "column": 4,
+     "shipDirection": "v",
+     "row": 1,
+     "type": "ac"
+    },
+    {
+     "column": 7,
+     "shipDirection": "h",
+     "row": 8,
+     "type": "ac"
+    },
+    {
+     "column": 8,
+     "shipDirection": "v",
+     "row": 2,
+     "type": "d"
+    },
+    {
+     "column": 1,
+     "shipDirection": "v",
+     "row": 4,
+     "type": "d"
+    },
+    {
+     "column": 0,
+     "shipDirection": "h",
+     "row": 7,
+     "type": "d"
+    },
+    {
+     "column": 12,
+     "shipDirection": "h",
+     "row": 9,
+     "type": "s"
+    },
+    {
+     "column": 10,
+     "shipDirection": "h",
+     "row": 12,
+     "type": "s"
+    }
+   ],
+   "name": "",
+   "fieldMarkedLocations": [],
+   "type": "computerPlayer"
+  }
+ ],
+ "columnsNum": 15,
+ "counterController": true,
+ "playing": "player1",
+ "counter": 0,
+ "maxMoves": -1,
+ "rowsNum": 15
+}
