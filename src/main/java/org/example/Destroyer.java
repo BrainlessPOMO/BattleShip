@@ -13,6 +13,7 @@ public class Destroyer extends Ship{
     }
 
     // function for saving type of Ship on a file
+    @Override
     public String getClassString(){ return "d"; }
 
 }

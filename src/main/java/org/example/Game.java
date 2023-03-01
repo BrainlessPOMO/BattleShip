@@ -45,27 +45,14 @@ public class Game extends Main{
     }
 
     public void start(){
-        System.out.println(this.player1.getName() + "'s Field");
-        System.out.println("----------------------------------------------------------------");
-        System.out.println(player1.getField().toStringWithShips());
-
-        System.out.println(this.player2.getName() + "'s Field");
-        System.out.println("----------------------------------------------------------------");
-        System.out.println(player2.getField().toStringWithShips());
-
         while (this.maxMoves != counter){
             while (true){
                 try {
-                    currentPlayer.selectMove();
-
                     System.out.println(currentPlayer.getName() + "'s Field");
                     System.out.println("----------------------------------------------------------------");
-                    System.out.println(currentPlayer.getField().toStringWithShips());
-
-                    for (Ship ship : this.currentPlayer.getField().getShips()){
-                        System.out.println(ship);
-                    }
-
+                    System.out.println(currentPlayer.getField().toString());
+                    
+                    currentPlayer.selectMove();
                     break;
                 } catch (MoveIsCommandException e){
                     commandController(e);
@@ -93,13 +80,13 @@ public class Game extends Main{
 
     public void showResult(){
         System.out.println("Max Moves reached");
-        showFields();
+        showFieldsWithShips();
         showScores();
     }
 
     public void showResult(Player player){
         System.out.println(player.getName() + " won!!!");
-        showFields();
+        showFieldsWithShips();
         showScores();
     }
 
@@ -116,6 +103,17 @@ public class Game extends Main{
         System.out.println(this.player2.getName() + "'s Field");
         System.out.println("----------------------------------------------------------------");
         System.out.println(player2.field.toString());
+
+    }
+    
+    public void showFieldsWithShips(){
+        System.out.println(this.player1.getName() + "'s Field");
+        System.out.println("----------------------------------------------------------------");
+        System.out.println(player1.field.toStringWithShips());
+
+        System.out.println(this.player2.getName() + "'s Field");
+        System.out.println("----------------------------------------------------------------");
+        System.out.println(player2.field.toStringWithShips());
 
     }
 
@@ -179,7 +177,7 @@ public class Game extends Main{
 
                 System.out.println("Provide the maximum moves that are going to be played(leave blank for playing until someone wins!)");
                 String tempMoves = sc.nextLine();
-                if(tempMoves == "") {
+                if("".equals(tempMoves)) {
                     this.maxMoves = -1;
                     break;
                 }

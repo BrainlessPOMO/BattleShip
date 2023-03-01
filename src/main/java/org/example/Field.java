@@ -10,14 +10,14 @@ public class Field {
     private int numCols;
     private ArrayList<ArrayList<Location>> locations = new ArrayList<>();
 
-    private ArrayList<Ship> ships = new ArrayList<Ship>();
+    private ArrayList<Ship> ships = new ArrayList<>();
 
     public Field(int numRows, int numCols){
         this.numRows = numRows;
         this.numCols = numCols;
 
         // initialize 2-D ArrayList
-        for (int i=0; i<numRows; i++) locations.add(new ArrayList<Location>());
+        for (int i=0; i<numRows; i++) locations.add(new ArrayList<>());
 
         // add locations on the ArrayList
         for(int i=0; i<numRows; i++){
@@ -130,18 +130,22 @@ public class Field {
         return false;
     }
 
+    @Override
     public String toString(){
         StringBuilder tempString = new StringBuilder();
         // print 2-D ArrayList
         tempString.append("    ");
+        // print the columns numbers
         for(int i=0; i<locations.get(0).size(); i++){
             tempString.append(getNums(i));
         }
         tempString.append("\n    ");
-        for(int i=0; i<locations.get(0).size(); i++){
+        for (Location loc : locations.get(0)) {
             tempString.append("   _");
         }
+        
         tempString.append("\n");
+        // print the rows letters
         for(int i=0; i<locations.size(); i++){
             tempString.append(convertRow(i) + "  |");
             for(int j=0; j<locations.get(i).size(); j++){
@@ -157,6 +161,7 @@ public class Field {
         StringBuilder tempString = new StringBuilder();
         // print 2-D ArrayList
         tempString.append("    ");
+        // print the columns numbers
         for(int i=0; i<locations.get(0).size(); i++){
             tempString.append(getNums(i));
         }
@@ -164,7 +169,9 @@ public class Field {
         for(int i=0; i<locations.get(0).size(); i++){
             tempString.append("   _");
         }
+        
         tempString.append("\n");
+        // print the rows letters
         for(int i=0; i<locations.size(); i++){
             tempString.append(convertRow(i) + "  |");
             for(int j=0; j<locations.get(i).size(); j++){
@@ -207,7 +214,6 @@ public class Field {
             //
             // initialize or update new ship in ships ArrayList
             //
-            System.out.println(ships.indexOf(s));
             if(ships.indexOf(s) != -1){
                 ships.set(ships.indexOf(s), s);
             }
@@ -220,7 +226,6 @@ public class Field {
             //
             // initialize or update new ship in ships ArrayList
             //
-            System.out.println(ships.indexOf(s));
             if(ships.indexOf(s) != -1){
                 ships.set(ships.indexOf(s), s);
             }
@@ -287,12 +292,10 @@ public class Field {
     // function to get correct spaces for the printing of the Field
     public String getNums(int number) {
         //if(number%10 > 10) return
-        switch (number){
-            case 10,11,12,13,14,15,16,17,18,19:
-                return "  " + number;
-            default:
-                return "   " + number;
-        }
+        return switch (number) {
+            case 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 -> "  " + number;
+            default -> "   " + number;
+        };
     }
     public char convertRow(int number) {
         switch (number){
@@ -370,12 +373,17 @@ public class Field {
     private void shipThreat(Location threatingLocation, Location hitLocation){
 
         //
-        // if the threatened location is marked or does not have a ship or has the same ship as the one hit
+        // if the threatened location is marked 
+        // or does not have a ship 
+        // or has the same ship as the one hit
+        // or has already been hit
+        //
         // Then we won't try to change its position
         //
 
         if(threatingLocation.isMarked() || threatingLocation.getShip() == null || threatingLocation.getShip() == hitLocation.getShip()) return;
-
+        if(threatingLocation.getShip().isHit()) return;
+        
 
         if(threatingLocation.getShip().getClass() == AircraftCarrier.class) return;
 

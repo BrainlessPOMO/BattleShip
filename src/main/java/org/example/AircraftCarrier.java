@@ -2,8 +2,6 @@ package org.example;
 
 public class AircraftCarrier extends Ship{
 
-    private int hitCounter = 0;
-
     public AircraftCarrier(Field field) {
         super(5, 5, 'A', field);
     }
@@ -17,5 +15,6 @@ public class AircraftCarrier extends Ship{
     }
 
     // function for saving type of Ship on a file
+    @Override
     public String getClassString(){ return "ac"; }
 }

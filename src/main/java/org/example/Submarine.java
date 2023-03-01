@@ -14,5 +14,6 @@ public class Submarine extends Ship{
     }
 
     // function for saving type of Ship on a file
+    @Override
     public String getClassString(){ return "s"; }
 }

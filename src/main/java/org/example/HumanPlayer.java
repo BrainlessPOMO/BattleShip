@@ -10,7 +10,7 @@ public class HumanPlayer extends Player{
     }
 
     public void selectMove() throws InvalidLocationException, Exception{
-        System.out.println("Please give a command to be executed, or make a move");
+        System.out.println(this.getName() + ", please give a command to be executed, or make a move");
         Scanner sc = new Scanner(System.in);
 
         String decision = sc.nextLine();
@@ -37,6 +37,7 @@ public class HumanPlayer extends Player{
 
     }
 
+    @Override
     public void placeShips(Field otherField){
         if(wantRandomizedShipPlaces()){
             super.placeShips(otherField);
@@ -69,7 +70,7 @@ public class HumanPlayer extends Player{
      * */
     private boolean wantRandomizedShipPlaces() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Do you want your ships to be placed randomly?(yes, no): ");
+        System.out.println( this.getName() + ", do you want your ships to be placed randomly?(yes, no): ");
 
         String random = sc.nextLine().toLowerCase();
         switch (random){
@@ -85,9 +86,9 @@ public class HumanPlayer extends Player{
         boolean isplaced = false;
 
         while(!isplaced){
-            System.out.println("Please tell me where you want to put your "+ typeOfShip +"(ex: A3): ");
+            System.out.println(this.getName() + ", please tell me where you want to put your "+ typeOfShip +"(ex: A3): ");
             String tempLoc = sc.nextLine();
-            System.out.println("Please tell me the direction of your your first AircraftCarrier(ex: h=horizontal, v=vertical): ");
+            System.out.println(this.getName() + ", please tell me the direction of your your first AircraftCarrier(ex: h=horizontal, v=vertical): ");
             String tempDir = sc.nextLine();
 
             try {

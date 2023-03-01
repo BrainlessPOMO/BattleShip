@@ -115,21 +115,40 @@ public class Location {
 
     public String toString(){
         if(!this.isMarked()){
+            // location is not marked
             return ".";
         }
         if(this.ship == null){
+            // location is marked and has no ship in it
             return "o";
         }
         if(!this.ship.isSinking()){
+            // location is marked and has ship in it and the ship is not sinking
             return "x";
         }
+        
+        // location is marked and has ship in it and the ship is sinking
         return "x" + this.ship.getLetter();
     }
 
     public String toStringWithShip(){
-        if(this.ship == null){
+        
+        if(!this.isMarked()){
+            // location is not marked
+            if (this.ship != null){
+                // location is not marked and has a ship
+                return String.valueOf(this.ship.getLetter());
+            }
+            
+            // location is not marked and has no ship in it
             return ".";
         }
-        return String.valueOf(ship.getLetter());
+        if(this.ship == null){
+            // location is marked and has no ship in it
+            return "o";
+        }
+
+        // location is marked and has ship in it
+        return "x" + this.ship.getLetter();
     }
 }

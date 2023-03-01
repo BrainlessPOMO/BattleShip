@@ -6,9 +6,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -17,7 +15,7 @@ public class Main {
 
     public static Game game;
 
-
+    public final String savesFolder = "src\\main\\java\\saves";
 
     public static void main(String[] args) {
 
@@ -45,6 +43,30 @@ public class Main {
             case SAVE:
                 saveCommandController();
                 break;
+            case PRINT:
+                
+                System.out.println(game.getPlayer1().getName() + "'s Field");
+                System.out.println("----------------------------------------------------------------");
+                System.out.println(game.getPlayer1().getField().toString());
+
+                System.out.println(game.getPlayer2().getName() + "'s Field");
+                System.out.println("----------------------------------------------------------------");
+                System.out.println(game.getPlayer2().getField().toString());    
+                break;
+            
+            case SHIPRINT:
+                try{
+                    System.out.println(game.getPlayerFromNum(1).getName() + "'s Field");
+                    System.out.println("----------------------------------------------------------------");
+                    System.out.println(game.getPlayerFromNum(1).getField().toStringWithShips());
+                    
+                    System.out.println(game.getPlayerFromNum(2).getName() + "'s Field");
+                    System.out.println("----------------------------------------------------------------");
+                    System.out.println(game.getPlayerFromNum(2).getField().toStringWithShips());    
+                } catch(InvalidPlayerException ex){
+                    System.out.println("There is no such player");
+                }
+                break;
             default:
                 helpCommandController();
         }
@@ -55,10 +77,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         String answer = sc.nextLine().toLowerCase();
 
-        if(answer.equals("y") || answer.equals("yes")){
-            return true;
-        }
-        return false;
+        return answer.equals("y") || answer.equals("yes");
     }
 
     /*
@@ -93,7 +112,7 @@ public class Main {
 
         System.out.println("How would you want the save to be called?");
         String fileName = getFileName();
-        String fileDir = "src\\main\\saves\\" + fileName + ".json";
+        String fileDir = this.savesFolder + fileName + ".json";
         try{
             File file = new File(fileDir);
             if(file.exists()) {
@@ -111,25 +130,25 @@ public class Main {
             outputFile.write(outputJSONObject.toString(1));
 
             outputFile.close();
-        } catch (IOException e){
-            e.printStackTrace();
-        }
+        } catch (IOException e){ }
 
         System.out.println("Game Successfully Saved");
     }
     private void loadCommandController() throws LoadFailException {
         int currentPlayer = readFromFileAndParseInfo();
-        System.out.println("\n\n------------------------------\nFile is parsed! Game begins\n------------------------------\n\n");
-        if(currentPlayer == 1){
-            game.setCurrentPlayer(game.getPlayer1());
-            game.start();
-        }
-        else if (currentPlayer == 2){
-            game.setCurrentPlayer(game.getPlayer2());
-            game.start();
-        }
-        else {
-            throw new LoadFailException();
+        switch (currentPlayer) {
+            case 1:
+                game.setCurrentPlayer(game.getPlayer1());
+                game.start();
+                System.out.println("\n\n------------------------------\nFile is parsed! Game begins\n------------------------------\n\n");
+                break;
+            case 2:
+                game.setCurrentPlayer(game.getPlayer2());
+                game.start();
+                System.out.println("\n\n------------------------------\nFile is parsed! Game begins\n------------------------------\n\n");
+                break;
+            default:
+                throw new LoadFailException();
         }
     }
 
@@ -242,7 +261,6 @@ public class Main {
 
         // create a JSONArray containing all the markedLocations on player's 1 field
         JSONArray playerMarkedLocationsJSONArray = new JSONArray();
-        JSONObject ob = new JSONObject();
         for(ArrayList<Location> row : game.getPlayerFromNum(playerNum).getField().getLocations()){
             for(Location loc : row){
                 if(loc.isMarked()) playerMarkedLocationsJSONArray.put(locationToJSONObject(loc));
@@ -261,12 +279,20 @@ public class Main {
     * Helper Functions
     *
     * */
-    public int readFromFileAndParseInfo(){
+    public int readFromFileAndParseInfo() throws LoadFailException{
         System.out.println("Which game file do you want to be loaded?");
 
-        String pathToFile = "src\\main\\saves\\" + getFileName() + ".json";
+        String fileName = getFileName();
+        String pathToFile = this.savesFolder + fileName + ".json";
 
         int currentPlayer = -1;
+        
+        // check if the file exists
+        File file = new File(pathToFile);
+        if(!file.exists()) {
+            throw new LoadFailException("File with name '" + fileName + "' does not exist!");
+        }
+        
         try {
             String contents = new String((Files.readAllBytes(Paths.get(pathToFile))));
 
@@ -302,9 +328,7 @@ public class Main {
             if(gameInfo.getString("playing").equals("player2")) currentPlayer = 2;
             else currentPlayer = 1;
 
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        } catch (LoadFailException e) {
+        } catch (IOException | LoadFailException e) {
             System.out.println(e.getMessage());
         }
         return currentPlayer;

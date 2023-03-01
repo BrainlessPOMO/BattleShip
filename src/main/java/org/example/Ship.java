@@ -25,6 +25,7 @@ public class Ship {
         this.dir = dir;
     }
 
+    @Override
     public String toString(){
         return (
                 "Length:" + this.getLength() +
@@ -44,18 +45,12 @@ public class Ship {
     }
 
     public Boolean isHit(){
-        if(this.hitCounter > 0){
-            return true;
-        }
-        return false;
+        return this.hitCounter > 0;
     }
     public Boolean isSinking(){
         // if ship is sinking then his whole length will be hit
         // so our hitCounter will be the same as the length of the ship
-        if(this.hitCounter == this.length){
-            return true;
-        }
-        return false;
+        return this.hitCounter == this.length;
     }
     public String getHitMessage(){
         if(this.isHit()){
